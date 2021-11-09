@@ -4,6 +4,8 @@ from numpy import exp
 from numpy.random import uniform,choice,randint
 from numpy.linalg import norm
 
+from matplotlib import pyplot as plt
+
 class neural_gas:
     
     def __init__(self,n_nodes,feature_dim,step_size,neighbour_hood_range):
@@ -25,7 +27,7 @@ class neural_gas:
             # sample uniformly in this dimension
             self._W[:,i] = uniform(low=mmin,high=mmax,size=(1,self._N))
             
-    def train(self,X,n_iterations):
+    def train(self,X,n_iterations,animate=True):
         # get number of samples
         m = X.shape[0]
         # while there is still training steps left:
@@ -37,14 +39,21 @@ class neural_gas:
             dist = np.zeros((self._N,2))
             for i,w in enumerate(self._W):
                 # calculate distance to x
-                dist[0] = i
-                dist[1] = norm(w-x)
+                dist[i,0] = i
+                dist[i,1] = norm(w-x)
             # sort feature vectors in ascending order of distance to x
             dist = dist[np.argsort(dist[:, 1])]
             # from closest to farthest update the vector according to
             for k,d in enumerate(dist):
                 # select the right feature vector
-                w_idx = d[0]
-                w = self.W[w_idx,:]
+                w_idx = int(d[0])
+                w = self._W[w_idx,:]
                 # learning rule
-                self.W[w_idx,:] = w+self._epsilon*exp(-k/self._nhr)*(x-w) 
+                self._W[w_idx,:] = w+self._epsilon*exp(-k/self._nhr)*(x-w) 
+            if animate:
+                plt.scatter(X[:,0],X[:,1])
+                plt.scatter(self._W[:,0],self._W[:,1])
+                plt.draw()
+                plt.pause(0.25)
+                plt.clf()
+                
