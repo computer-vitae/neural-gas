@@ -6,7 +6,7 @@ from numpy.linalg import norm
 
 from matplotlib import pyplot as plt
 
-class neural_gas:
+class NeuralGas:
     
     def __init__(self,n_nodes,feature_dim,step_size,neighbour_hood_range):
         
@@ -30,6 +30,7 @@ class neural_gas:
     def train(self,X,n_iterations,animate=True):
         # get number of samples
         m = X.shape[0]
+        # create figure for plot if wanted
         # while there is still training steps left:
         for t in range(n_iterations):
             # draw a value from X that I call x
@@ -51,9 +52,16 @@ class neural_gas:
                 # learning rule
                 self._W[w_idx,:] = w+self._epsilon*exp(-k/self._nhr)*(x-w) 
             if animate:
+                plt.clf()
                 plt.scatter(X[:,0],X[:,1])
                 plt.scatter(self._W[:,0],self._W[:,1])
+                # plot lines
+                for idx,w0 in enumerate(self._W):
+                    for _,w1 in enumerate(self._W[idx+1:]):
+                        x_pos = [w0[0],w1[0]]
+                        y_pos = [w0[1],w1[1]]
+                        plt.plot(x_pos, y_pos, 'black', linestyle='--', marker='')
                 plt.draw()
                 plt.pause(0.25)
-                plt.clf()
+                
                 
