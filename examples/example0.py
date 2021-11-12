@@ -1,11 +1,10 @@
 import sys
 import os
 
-# path = os.path.join(os.path.dirname(__file__), os.pardir)
-# fwd = os.path.dirname(__file__)
-# sys.path.append(path)
+path = os.path.join(os.path.dirname(__file__), os.pardir)
+fwd = os.path.dirname(__file__)
+sys.path.append(path)
 
-sys.path.insert(0, '../')
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
