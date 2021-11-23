@@ -63,5 +63,22 @@ class NeuralGas:
                         plt.plot(x_pos, y_pos, 'black', linestyle='--', marker='')
                 plt.draw()
                 plt.pause(0.25)
+
+
+        def k_dist(self, x):
+            '''
+            Finds the ditance from x to all the centers
+            '''
+            dist = np.zeros((self._N,2))
+            for i,w in enumerate(self._W):
+                # calculate distance to x
+                dist[i,0] = i
+                dist[i,1] = norm(w-x)
+            # sort feature vectors in ascending order of distance to x
+            dist = dist[np.argsort(dist[:, 1])]
+            return dist
+
+        def add_node(graph, x):
+            dists = self
                 
                 
